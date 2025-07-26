@@ -14,7 +14,7 @@ int main()
 
     time_t now = time(NULL);
     struct tm timestamp = *localtime(&now);
-    
+
     int year = timestamp.tm_year + 1900, month = timestamp.tm_mon + 1, day = 1;
 
     string color, name, description, temp;

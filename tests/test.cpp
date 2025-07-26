@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 // Day of the week test
 int test(int startY, int endY, Calendar::Mode gregorian)
 {

@@ -23,7 +23,7 @@ namespace Calendar
     std::pair<int, int> lastMonth(int year, int month);
     std::pair<int, int> nextMonth(int year, int month);
 
-        /// @brief Generates a calendar for the given month and year
+    /// @brief Generates a calendar for the given month and year
     /// @param year The year
     /// @param month The month (1-12)
     /// @param mode Whether to use the Gregorian or Julian calendar

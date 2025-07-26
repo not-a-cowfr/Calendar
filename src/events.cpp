@@ -31,14 +31,14 @@ namespace Events
 {
     /// @brief Creates an event and adds it to a vector
     /// @param eventsVector The vector to add events to
-    /// @param month 
-    /// @param day 
+    /// @param month
+    /// @param day
     /// @param time The time as an integer
     /// @param color The color as the number part of an ansi code
-    /// @param name 
-    /// @param description 
+    /// @param name
+    /// @param description
     void createEvent(std::vector<Event> &eventsVector, int month, int day, int time,
-             std::string color, std::string name, std::string description)
+                     std::string color, std::string name, std::string description)
     {
         eventsVector.emplace_back(0, month, day, time, 1, color, name, description);
         std::ofstream outputFile("events.txt", std::ios::app);
