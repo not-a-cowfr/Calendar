@@ -1,5 +1,5 @@
 # Calendar
-A TUI calendar program written in C++ for Windows. Made for a school project.
+A TUI calendar program written in C++ **for Windows**. Made for a school project.
 
 # Downloading
 To download the source code, it's recommended that you clone this repository.
