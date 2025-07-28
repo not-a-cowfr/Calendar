@@ -114,7 +114,7 @@ namespace Calendar
     /// @brief Calculates the day of the week of given date.
     /// Based on a modification of Zeller's Congruence by Claus Tøndering where Sunday is 0.
     ///     See https://www.tondering.dk/claus/cal/chrweek.php#calcdow
-    ///    see also https://en.wikipedia.org/wiki/Zeller%27s_congruence
+    ///     see also https://en.wikipedia.org/wiki/Zeller%27s_congruence
     /// @param year The year (use negative numbers for BC)
     /// @param month The month (0-12)
     /// @param day The day (0-6)

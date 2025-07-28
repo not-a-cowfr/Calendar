@@ -132,7 +132,7 @@ int main()
         {
             cout << "Enter the day (leave blank to cancel): ";
 
-            if (!validateIntInput(day, 0, Calendar::daysInMonth(year, month, calendarMode), true))
+            if (!validateIntInput(day, 1, Calendar::daysInMonth(year, month, calendarMode), true))
                 continue;
 
             cout << "Enter the name: ";
@@ -276,13 +276,14 @@ bool displayEvents(std::vector<Event> &eventsVector, Calendar::Mode mode, int mo
     string stringInput;
     char key;
 
+    cout << "\n";
     for (auto event : eventsVector)
     {
         if (event.month == month || month == -1)
         {
             cout << setw(2) << filteredI << ": "
-                 << setw(2) << Calendar::monthName(event.month, 3) << " "
                  << "\e[" << event.color << "m"
+                 << setw(2) << Calendar::monthName(event.month, 3) << " "
                  << setw(2) << event.day << "\e[0m " << event.name << "\n";
             filteredI++;
             filteredEvents.push_back(i); // Store the actual id of the filtered event
@@ -433,7 +434,7 @@ void handleCommands(string command) // TODO: Define commands in an array of stru
         cout << " detect -> Detect the next keypress\n"
              << " esc -> Test an ANSI escape code\n"
              << " q -> Quit\n"
-             << " julian or :gregorian -> Prints info about the Julian and Gregorian calendars\n"
+             << " julian or gregorian -> Prints info about the Julian and Gregorian calendars\n"
              << " help -> Show this menu";
     }
     else
