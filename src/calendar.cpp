@@ -111,9 +111,9 @@ namespace Calendar
         std::cout << "\e[0m";
     }
 
-    /// @brief Calculates the day of the week of given date
-    ///  Based on a modification of Zeller's Congruence by Claus Tøndering where Sunday is 0
-    ///    https://www.tondering.dk/claus/cal/chrweek.php#calcdow
+    /// @brief Calculates the day of the week of given date.
+    /// Based on a modification of Zeller's Congruence by Claus Tøndering where Sunday is 0.
+    ///     See https://www.tondering.dk/claus/cal/chrweek.php#calcdow
     ///    see also https://en.wikipedia.org/wiki/Zeller%27s_congruence
     /// @param year The year (use negative numbers for BC)
     /// @param month The month (0-12)
@@ -137,7 +137,7 @@ namespace Calendar
         return (day + (31 * m) / 12 + y + y / 4 + calendar) % 7;
     }
 
-    /// @brief Calculates if a year is a leap year in the specific calendar
+    /// @brief Calculates if a year is a leap year in the specified calendar
     /// @param year The year in question
     /// @param mode Whether to use the Gregorian or Julian calendar
     /// @return true if the year is a leap year, or false

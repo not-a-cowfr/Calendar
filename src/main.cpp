@@ -42,7 +42,7 @@ int main()
 
     while (!exit)
     {
-        cout << "\e[H\e[0J\n"; // Ansi codes to go top left and erase display
+        cout << "\e[H\e[0J\n"; // ANSI codes to go top left and erase display
         Calendar::displayMonth(year, month, events, calendarMode);
         cout << flush;
 
@@ -204,7 +204,7 @@ int main()
 /// @param min The minimum value of the integer
 /// @param max The maximum value of the integer
 /// @param acceptEnter Whether or not to accept enter (will return false if enter is accepted)
-/// @return true if an integer is accepted (false will only be returned with `acceptEnter = true`)
+/// @return true if an integer is accepted. false will only be returned with `acceptEnter = true`
 bool validateIntInput(int &input, int min, int max, bool acceptEnter)
 {
     string inputStr;
@@ -221,7 +221,7 @@ bool validateIntInput(int &input, int min, int max, bool acceptEnter)
         }
         catch (const exception &e)
         {
-            if (inputStr == "" && acceptEnter) // Enter will be a blank string, not "\n"
+            if (inputStr == "" && acceptEnter) // Getline doesn't include the \n, so Enter is just ""
                 return false;
 
             cout << "You must enter an integer: ";
@@ -230,8 +230,8 @@ bool validateIntInput(int &input, int min, int max, bool acceptEnter)
     }
 }
 
-/// @brief Determines if a string is a valid ansi color code attribute
-/// @param color Ansi color code attribute to test (just the `n` in `ESC]nm`)
+/// @brief Determines if a string is a valid ANSI color code attribute
+/// @param color ANSI color code attribute to test (just the `n` in `\\e]nm`)
 /// @return return Whether the color is valid (true/false)
 bool isValidColor(string color)
 {
@@ -244,7 +244,7 @@ bool isValidColor(string color)
     return true;
 }
 
-/// @brief Shows the foreground and background ansi colors
+/// @brief Shows the foreground and background ANSI code colors
 void showColors()
 {
     cout << "Enter a foreground and/or background color seperated by ';'\n";
@@ -268,13 +268,14 @@ void showColors()
 /// @param eventsVector The vector of events to filter from
 /// @param mode Whether to use the Gregorian or Julian calendar
 /// @param month The month to filter by. -1 to show all
-/// @return Whether a queued key should be set
+/// @return Whether a key should be queued (true/false)
 bool displayEvents(std::vector<Event> &eventsVector, Calendar::Mode mode, int month)
 {
     vector<int> filteredEvents;
     int i = 0, filteredI = 0, idInput, id, intInput;
     string stringInput;
     char key;
+
     for (auto event : eventsVector)
     {
         if (event.month == month || month == -1)
@@ -288,6 +289,7 @@ bool displayEvents(std::vector<Event> &eventsVector, Calendar::Mode mode, int mo
         }
         i++;
     }
+
     if (filteredI == 0)
     {
         cout << "No events";
@@ -330,27 +332,30 @@ bool displayEvents(std::vector<Event> &eventsVector, Calendar::Mode mode, int mo
     return false;
 }
 
-/// @brief Edits an event. Does not save to file
+/// @brief Prompts the user to edit an event. Does not save to file
 /// @param event The event to edit
 /// @param mode Whether to use the Gregorian or Julian calendar
 void editEvent(Event &event, Calendar::Mode mode)
 {
     int intInput, daysInMonth;
     string stringInput;
-    cout << "\nLeave blank to keep value\n\n";
-    cout << "Enter the month: ";
+
+    cout << "\nLeave blank to keep the current value\n\n";
+
+    cout << "Enter the new month: ";
     if (validateIntInput(intInput, 0, 12, true))
     {
         event.month = intInput;
     }
-    cout << "Enter the day: ";
+
+    cout << "Enter the new day: ";
     daysInMonth = Calendar::daysInMonth(event.year, event.month, mode);
     if (validateIntInput(intInput, 1, daysInMonth, true))
     {
         event.day = intInput;
     }
 
-    cout << "Enter the name: ";
+    cout << "Enter the new name: ";
     getline(cin, stringInput);
     if (stringInput != "")
         event.name = stringInput;
@@ -374,26 +379,26 @@ void editEvent(Event &event, Calendar::Mode mode)
 }
 
 /// @brief Shows a help menu for the actions
-void helpMenu()
+void helpMenu() // TODO Define actions in an array of structs (key and aliases, desc, function?)
 {
-    cout << "q -> quit with confirmation\n"
-         //  << "^C -> immediately quit\n"
-         << "j/k or down/up -> next/previous month\n"
-         << "h/l or left/right -> next/previous year\n"
-         << "g -> go to year\t\t\t|\t" << "G -> go to month\n"
-         << "n -> new event\n"
-         << "e -> show events in month\t|\t" << "E -> show all events\n"
+    cout << "q -> Quit with confirmation\n"
+         //  << "^C -> Immediately quit\n"
+         << "j/k or down/up -> Next/previous month\n"
+         << "h/l or left/right -> Next/previous year\n"
+         << "g -> Go to year\t\t\t|\t" << "G -> Go to month\n"
+         << "n -> Bew event\n"
+         << "e -> Show events in month\t|\t" << "E -> Show all events\n"
          << "m -> Switch between Gregorian (normal) and Julian\n"
          << ": -> Command prompt\n"
          << "? -> Show this menu" << flush;
-    // _getch();
 }
 
-/// @brief Handles : commands (except for :q)
+/// @brief Handles `:` commands (except for :q)
 /// @param command The command name
-void handleCommands(string command)
+void handleCommands(string command) // TODO Define commands in an array of structs (command and aliases, desc, function?)
 {
     string tempStr;
+
     if (command == "detect")
     {
         const char key = _getch();
@@ -405,7 +410,7 @@ void handleCommands(string command)
     }
     else if (command == "esc")
     {
-        cout << "Enter ansi escape code (everything after \\e[): ";
+        cout << "Enter ANSI escape code (everything after \\e[): ";
         getline(cin, tempStr);
         cout << "\e[" << tempStr << "test" << "\e[0m ";
     }
@@ -425,11 +430,11 @@ void handleCommands(string command)
     }
     else if (command == "help" || command == "h" || command == "?")
     {
-        cout << " detect -> detect the next keypress\n"
-             << " esc -> test an ansi escape code\n"
-             << " q -> quit\n"
+        cout << " detect -> Detect the next keypress\n"
+             << " esc -> Test an ANSI escape code\n"
+             << " q -> Quit\n"
              << " julian or :gregorian -> Prints info about the Julian and Gregorian calendars\n"
-             << " help -> show this menu";
+             << " help -> Show this menu";
     }
     else
     {

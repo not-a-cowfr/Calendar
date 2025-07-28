@@ -5,13 +5,14 @@
 #include <string>
 #include <vector>
 
+/// @brief Struct containing data on an event
 struct Event
 {
-    int year; // Unimplemented
+    int year; // TODO
     int month;
     int day;
-    int time;   // Unimplemented. The time of day in minutes (0-1440)
-    int repeat; // Unimplemented
+    int time;   // TODO. The time of day in minutes (0-1439)
+    int repeat; // TODO
     std::string color;
     std::string name;
     std::string description;
@@ -30,7 +31,12 @@ struct Event
 
 namespace Events
 {
+    void createEvent(std::vector<Event> &eventsVector, int year, int month, int day, int time,
+                     int repeat, std::string color, std::string name, std::string description);
+    std::vector<Event> getInMonth(int month, const std::vector<Event> &eventsVector);
     bool compareEvents(const Event &event1, const Event &event2);
+    void saveToFile(std::vector<Event> &eventsVector, std::string fileName);
+    void loadFromFile(std::vector<Event> &eventsVector, std::string fileName);
 
     /// @brief Creates an event and adds it to a vector
     /// @param eventsVector The vector to add events to
@@ -82,6 +88,9 @@ namespace Events
             return event1.day < event2.day;
     }
 
+    /// @brief Sorts and saves events from a vector into a file
+    /// @param eventsVector The vector of events
+    /// @param fileName The file name to save as
     void saveToFile(std::vector<Event> &eventsVector, std::string fileName)
     {
         std::sort(eventsVector.begin(), eventsVector.end(), compareEvents);
@@ -141,5 +150,4 @@ namespace Events
             eventsVector.emplace_back(year, month, day, time, repeat, color, name, description);
         }
     }
-
 }
