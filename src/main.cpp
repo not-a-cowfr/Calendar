@@ -1,8 +1,8 @@
-#include <iostream>
-#include <iomanip>
-#include <ctime>
-#include <conio.h>
 #include <algorithm>
+#include <conio.h>
+#include <ctime>
+#include <iomanip>
+#include <iostream>
 #include "./calendar.cpp"
 
 using namespace std;

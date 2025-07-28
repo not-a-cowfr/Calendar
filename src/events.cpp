@@ -1,9 +1,9 @@
-#include <iostream>
+#include <algorithm>
 #include <fstream>
-#include <vector>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <algorithm>
+#include <vector>
 
 struct Event
 {
