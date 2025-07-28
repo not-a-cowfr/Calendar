@@ -379,7 +379,7 @@ void editEvent(Event &event, Calendar::Mode mode)
 }
 
 /// @brief Shows a help menu for the actions
-void helpMenu() // TODO Define actions in an array of structs (key and aliases, desc, function?)
+void helpMenu() // TODO: Define actions in an array of structs (key and aliases, desc, function?)
 {
     cout << "q -> Quit with confirmation\n"
          //  << "^C -> Immediately quit\n"
@@ -395,7 +395,7 @@ void helpMenu() // TODO Define actions in an array of structs (key and aliases, 
 
 /// @brief Handles `:` commands (except for :q)
 /// @param command The command name
-void handleCommands(string command) // TODO Define commands in an array of structs (command and aliases, desc, function?)
+void handleCommands(string command) // TODO: Define commands in an array of structs (command and aliases, desc, function?)
 {
     string tempStr;
 
