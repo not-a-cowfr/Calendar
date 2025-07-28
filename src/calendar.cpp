@@ -1,16 +1,18 @@
-#include <iostream>
-#include <iomanip>
 #include <ctime>
+#include <iomanip>
+#include <iostream>
 #include <vector>
 #include "./events.cpp"
 
+/// @brief Namespace with calendar related functions
 namespace Calendar
 {
-    enum Mode // TODO: Better name
+    /// @brief Enum for whether to use the Gregorian or Julian calendar
+    enum Mode
     {
-        Julian,
-        Gregorian,
-        Auto // TODO: Implement auto
+        Julian = 0,
+        Gregorian = 1,
+        // TODO: Implement Auto
     };
 
     void displayMonth(int year, int month, std::vector<Event> events, Mode mode);
@@ -22,6 +24,7 @@ namespace Calendar
     std::string dayName(int day, int length = 0);
     std::pair<int, int> lastMonth(int year, int month);
     std::pair<int, int> nextMonth(int year, int month);
+
 
     /// @brief Generates a calendar for the given month and year
     /// @param year The year
@@ -36,7 +39,11 @@ namespace Calendar
         int i = 0;
         const int prevIndex = (month + 10) % 12;
 
-        std::cout << monthName(month) << " " << year << "\n";
+        std::cout << monthName(month) << " " << year;
+        if (mode == Mode::Julian)
+            std::cout << " (Julian)";
+
+        std::cout << "\n";
 
         for (int d = 0; d < 7; d++)
         {
@@ -52,7 +59,6 @@ namespace Calendar
         // Fill the remaining 6 weeks
         displayDays(1, 6 * 7 - i, i, nextMonth(year, month),
                     Events::getInMonth((month % 12) + 1, events), "\e[90m");
-        std::cout << std::flush;
     }
 
     /// @brief Prints a series of days with line breaks after Saturdays
@@ -105,9 +111,9 @@ namespace Calendar
         std::cout << "\e[0m";
     }
 
-    /// @brief Calculates the day of the week of given date
-    ///  Based on a modification of Zeller's Congruence by Claus Tøndering where Sunday is 0
-    ///    https://www.tondering.dk/claus/cal/chrweek.php#calcdow
+    /// @brief Calculates the day of the week of given date.
+    /// Based on a modification of Zeller's Congruence by Claus Tøndering where Sunday is 0.
+    ///     See https://www.tondering.dk/claus/cal/chrweek.php#calcdow
     ///    see also https://en.wikipedia.org/wiki/Zeller%27s_congruence
     /// @param year The year (use negative numbers for BC)
     /// @param month The month (0-12)
@@ -131,7 +137,7 @@ namespace Calendar
         return (day + (31 * m) / 12 + y + y / 4 + calendar) % 7;
     }
 
-    /// @brief Calculates if a year is a leap year in the specific calendar
+    /// @brief Calculates if a year is a leap year in the specified calendar
     /// @param year The year in question
     /// @param mode Whether to use the Gregorian or Julian calendar
     /// @return true if the year is a leap year, or false
@@ -190,8 +196,8 @@ namespace Calendar
     }
 
     /// @brief Calculates the previous month (and year)
-    /// @param year The current year
-    /// @param month The current month (1-12)
+    /// @param year The year
+    /// @param month The month (1-12)
     /// @return A pair of ints representing the year and month
     std::pair<int, int> lastMonth(int year, int month)
     {
@@ -201,13 +207,26 @@ namespace Calendar
     }
 
     /// @brief Calculates the next month (and year)
-    /// @param year The current year
-    /// @param month The current month (1-12)
+    /// @param year The year
+    /// @param month The month (1-12)
     /// @return A pair of ints representing the year and month
     std::pair<int, int> nextMonth(int year, int month)
     {
         if (month == 12)
             return {year + 1, 1};
         return {year, month + 1};
+    }
+
+    /// @brief Calculates the amount of days in a specific month
+    /// @param year The year
+    /// @param month The month (1-12)
+    /// @param mode Whether to use the Gregorian or Julian calendar
+    /// @return An integer representing the amount of days in the month
+    int daysInMonth(int year, int month, Mode mode)
+    {
+        int days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        days[1] += isLeapYear(year, mode);
+
+        return days[month - 1];
     }
 }

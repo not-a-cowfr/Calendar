@@ -1,16 +1,18 @@
+#include <algorithm>
 #include <fstream>
-#include <vector>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <iostream>
+#include <vector>
 
+/// @brief Struct containing data on an event
 struct Event
 {
-    int year; // Unimplemented
+    int year; // TODO
     int month;
     int day;
-    int time;
-    int repeat; // Unimplemented
+    int time;   // TODO. The time of day in minutes (0-1439)
+    int repeat; // TODO
     std::string color;
     std::string name;
     std::string description;
@@ -29,20 +31,31 @@ struct Event
 
 namespace Events
 {
+    void createEvent(std::vector<Event> &eventsVector, int year, int month, int day, int time,
+                     int repeat, std::string color, std::string name, std::string description);
+    std::vector<Event> getInMonth(int month, const std::vector<Event> &eventsVector);
+    bool compareEvents(const Event &event1, const Event &event2);
+    void saveToFile(std::vector<Event> &eventsVector, std::string fileName);
+    void loadFromFile(std::vector<Event> &eventsVector, std::string fileName);
+
     /// @brief Creates an event and adds it to a vector
     /// @param eventsVector The vector to add events to
-    /// @param month
-    /// @param day
+    /// @param year The year the event starts
+    /// @param month The month the event starts (1-12)
+    /// @param day The day of the month the event starts (1-31)
     /// @param time The time as an integer
     /// @param color The color as the number part of an ansi code
-    /// @param name
-    /// @param description
-    void createEvent(std::vector<Event> &eventsVector, int month, int day, int time,
-                     std::string color, std::string name, std::string description)
+    /// @param repeat
+    /// @param name The name of the event
+    /// @param description Extra info/description of the event
+    void createEvent(std::vector<Event> &eventsVector, int year, int month, int day, int time,
+                     int repeat, std::string color, std::string name, std::string description)
     {
-        eventsVector.emplace_back(0, month, day, time, 1, color, name, description);
+        eventsVector.emplace_back(year, month, day, time, repeat, color, name, description);
+        std::sort(eventsVector.begin(), eventsVector.end(), compareEvents);
         std::ofstream outputFile("events.txt", std::ios::app);
-        outputFile << 0 << "\t" << month << "\t" << day << "\t" << time << "\t" << 1 << "\t" << color << "\t" << name << "\n";
+        outputFile << year << "\t" << month << "\t" << day << "\t" << time << "\t" << month << "\t"
+                   << color << "\t" << name << "\t" << description << "\n";
     }
 
     /// @brief Gets events in month
@@ -59,6 +72,40 @@ namespace Events
         }
 
         return results;
+    }
+
+    /// @brief A compare function for sorting events
+    /// @param event1
+    /// @param event2
+    /// @return Whether event1 comes before event2 (true/false)
+    bool compareEvents(const Event &event1, const Event &event2)
+    {
+        if (event1.year < event2.year)
+            return true;
+        else if (event1.month < event2.month)
+            return true;
+        else
+            return event1.day < event2.day;
+    }
+
+    /// @brief Sorts and saves events from a vector into a file
+    /// @param eventsVector The vector of events
+    /// @param fileName The file name to save as
+    void saveToFile(std::vector<Event> &eventsVector, std::string fileName)
+    {
+        std::sort(eventsVector.begin(), eventsVector.end(), compareEvents);
+        std::ofstream outputFile(fileName);
+        if (!outputFile.is_open())
+        {
+            std::cerr << "Unable to open file \"" << fileName << "\"\n";
+            return;
+        }
+        for (auto event : eventsVector)
+        {
+            outputFile << event.year << "\t" << event.month << "\t" << event.day << "\t"
+                       << event.time << "\t" << event.repeat << "\t"
+                       << event.color << "\t" << event.name << "\t" << event.description << "\n";
+        }
     }
 
     /// @brief Loads events from file into a vector
