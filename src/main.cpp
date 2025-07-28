@@ -3,7 +3,7 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
-#include "./calendar.cpp"
+#include "./calendar.cpp" // events.cpp is imported in calendar.cpp
 
 using namespace std;
 
@@ -36,6 +36,7 @@ int main()
     bool exit = false, keyWasQueued = false;
 
     // Display the month without clearing in case of errors or similar
+    cout << "\n";
     Calendar::displayMonth(year, month, events, calendarMode);
     cout << "Press ? for help.\n";
     queue = _getch();
