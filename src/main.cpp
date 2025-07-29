@@ -122,9 +122,11 @@ int main()
 
             try
             {
-                month = (stoi(tempStr) + 11) % 12 + 1; // Keep month from 1-12
-                if (month < 1)
-                    month *= -1;
+                month = stoi(tempStr);
+                if (month < 1) // Keep month from 1-12
+                    month = 1;
+                else if (month > 12)
+                    month = 12;
             }
             catch (const std::exception &e)
             {
