@@ -388,7 +388,7 @@ void helpMenu() // TODO: Define actions in an array of structs (key and aliases,
          << "j/k or down/up -> Next/previous month\n"
          << "h/l or left/right -> Next/previous year\n"
          << "g -> Go to year\t\t\t|\t" << "G -> Go to month\n"
-         << "n -> Bew event\n"
+         << "n -> New event\n"
          << "e -> Show events in month\t|\t" << "E -> Show all events\n"
          << "m -> Switch between Gregorian (normal) and Julian\n"
          << ": -> Command prompt\n"
