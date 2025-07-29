@@ -1,4 +1,3 @@
 .vscode/*
-ignored
-*.exe
 src/events.txt
+/target
