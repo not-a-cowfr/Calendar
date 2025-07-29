@@ -24,6 +24,7 @@ namespace Calendar
     std::string dayName(int day, int length = 0);
     std::pair<int, int> lastMonth(int year, int month);
     std::pair<int, int> nextMonth(int year, int month);
+    int daysInMonth(int year, int month, Mode mode);
 
 
     /// @brief Generates a calendar for the given month and year
