@@ -1,12 +1,16 @@
+mod events;
+
 use color_eyre::Result;
 use color_eyre::eyre::Ok;
 use crossterm::event::{self, KeyCode};
 use ratatui::Frame;
-use ratatui::style::{Color, Modifier, Style, Stylize};
+use ratatui::style::{Color, Style, Stylize};
 use ratatui::text::{Line, Text};
-use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
+use ratatui::widgets::calendar::Monthly;
 use time::ext::NumericalDuration;
 use time::{Date, Month, OffsetDateTime};
+
+use crate::events::Events;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
@@ -65,61 +69,12 @@ fn render(frame: &mut Frame, date: Date) {
 
     frame.render_widget(header.centered(), area);
 
-    let calendar = Monthly::new(date, events(date).unwrap())
+    let events = Events::new(date).add_selected();
+
+    let calendar = Monthly::new(date, events.get_store())
         .default_style(Style::new().bold().bg(Color::Rgb(50, 50, 50)))
         .show_weekdays_header(Style::default())
         .show_surrounding(Style::new().dim());
 
     frame.render_widget(calendar, area);
-}
-
-pub struct EventData {
-    name: String,
-    date: Date,
-    style: Style,
-}
-
-pub struct Events(Vec<EventData>);
-
-impl Events {
-    pub fn new() -> Self {
-        Events(Vec::new())
-    }
-
-    pub fn get_store(&self) -> CalendarEventStore {
-        let mut list = CalendarEventStore::today(
-            Style::default()
-                .add_modifier(Modifier::BOLD)
-                .bg(Color::Blue),
-        );
-        for data in &self.0 {
-            list.add(data.date, data.style);
-        }
-        list
-    }
-
-    pub fn get(&self) -> &Vec<EventData> {
-        &self.0
-    }
-
-    pub fn add(&mut self, data: EventData) {
-        self.0.push(data);
-    }
-}
-
-fn events(selected_date: Date) -> Result<CalendarEventStore> {
-    const SELECTED: Style = Style::new()
-        .fg(Color::White)
-        .bg(Color::Red)
-        .add_modifier(Modifier::BOLD);
-
-    let mut list = CalendarEventStore::today(
-        Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Blue),
-    );
-
-    list.add(selected_date, SELECTED);
-
-    Ok(list)
 }
