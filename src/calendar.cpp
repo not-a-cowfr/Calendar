@@ -148,6 +148,7 @@ namespace Calendar
     }
 
     /// @brief Determines whether to use the Gregorian or Julian calendar
+    ///        uses the month when British territories including the US switched.
     /// @param year The year
     /// @param month The month (1-12)
     /// @return Gregorian or Julian as a Calendar::Mode
