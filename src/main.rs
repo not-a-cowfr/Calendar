@@ -30,6 +30,10 @@ fn main() -> Result<()> {
 				| KeyCode::Down => selected_date += 1.weeks(),
 				| KeyCode::Up => selected_date -= 1.weeks(),
 				| KeyCode::Right => selected_date += 1.days(),
+				| KeyCode::Char('n') => {
+					// open event creation menu, need to be able to change name, select color, and date
+					// but date should just be the one hovered i think
+				},
 				| _ => {},
 			}
 		}
@@ -67,7 +71,13 @@ fn render(
 	let header = Text::from_iter([
 		Line::from("Calendar".bold()),
 		Line::from("<Q> Quit| <tab> Next Month | <shift + tab> Previous Month, <arrow keys> Move"),
-		Line::from(format!("Current date: {}", date)),
+		Line::from(format!(
+			"Current date: {}, {}, {}{}",
+			date.day(),
+			date.month(),
+			date.year().abs(),
+			if date.year() < 0 { " BC" } else { "" }
+		)),
 	]);
 
 	frame.render_widget(header.centered(), area);

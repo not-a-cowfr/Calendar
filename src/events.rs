@@ -23,12 +23,14 @@ impl Events {
 		}
 	}
 
+	/// Adds the selected date as an "event"
 	pub fn add_selected(mut self) -> Self {
 		self.data
 			.insert(self.SELECTED_DATE, ("".to_string(), Self::SELECTED_STYLE));
 		self
 	}
 
+	/// Gets the ratatui CalendarStore
 	pub fn get_store(&self) -> CalendarEventStore {
 		let mut list = CalendarEventStore::today(
 			Style::default()
@@ -41,13 +43,15 @@ impl Events {
 		list
 	}
 
-	pub fn add(
+	/// Adds an event
+	pub fn add_event(
 		mut self,
 		date: Date,
 		name: String,
-		style: Style,
+		style: Option<Style>,
 	) -> Self {
-		self.data.insert(date, (name, style));
+		self.data
+			.insert(date, (name, style.unwrap_or(Style::default())));
 		self
 	}
 }
