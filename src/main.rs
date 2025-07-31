@@ -4,6 +4,7 @@ use color_eyre::Result;
 use color_eyre::eyre::Ok;
 use crossterm::event::{self, KeyCode};
 use ratatui::Frame;
+use ratatui::layout::Rect;
 use ratatui::style::{Color, Style, Stylize};
 use ratatui::text::{Line, Text};
 use ratatui::widgets::calendar::Monthly;
@@ -85,9 +86,12 @@ fn render(
 	let events = Events::new(date).add_selected();
 
 	let calendar = Monthly::new(date, events.get_store())
-		.default_style(Style::new().bold().bg(Color::Rgb(50, 50, 50)))
+		.default_style(Style::new().bold())
 		.show_weekdays_header(Style::default())
 		.show_surrounding(Style::new().dim());
 
-	frame.render_widget(calendar, area);
+	frame.render_widget(
+		calendar,
+		Rect::new(area.width / 2 - 11, 4, area.width, area.height),
+	);
 }
